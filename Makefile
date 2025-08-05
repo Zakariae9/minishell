@@ -5,7 +5,7 @@ RM = rm -rf
 
 SRCS = check_errores1.c free.c helper2.c libft1.c libft3.c linkedlist1.c temp.c expanding.c\
 helper1.c lexer.c libft2.c libft4.c main.c env.c helper3.c merging.c utils.c built_in_cmd.c export.c env2.c cd.c unset.c\
-execute.c redirections.c utils_exec.c \
+execute.c redirections.c utils_exec.c signals.c \
 
 OBJS = ${SRCS:.c=.o}
 

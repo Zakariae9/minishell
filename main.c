@@ -1,18 +1,16 @@
 #include "minishell.h"
 
-void	read_commands(t_token	**head, t_env *env_head)
+void	read_commands(char *input ,t_token	**head, t_env *env_head)
 {
-	char	*command;
 
 	*head = NULL;
-	command	 = readline("minishell> ");
-	add_history(command);
-	if (check_are_qoutes_open(command))
+
+	if (check_are_qoutes_open(input))
 	{
 		ft_putstr_fd("syntax error\n", 2);
 		return ;
 	}
-	lexer(command, head);
+	lexer(input, head);
 	if (!(*head))
 		return ;
 	if (!are_bash_rules_correct(*head))
@@ -30,21 +28,32 @@ void	start_minishell(char **env)
 	t_token		*head;
 	t_env		*head_env;
 	t_cmd		*cmd;
-	int		g_exit_status = 0;
 
 
 	make_env_list(env, &head_env);
+	t_env **envp = &head_env;
 	while (1)
 	{
-		read_commands(&head, head_env);
+		setup_signals();
+		char *input = readline("minishell> ");
+		if(!input)
+		{
+			write(1 ,"exit\n" , 5);
+			rl_clear_history();
+			break;
+		}
+		if(*input)
+			add_history(input);
+		read_commands(input , &head , head_env);
+		free(input);
 		if (!head)
 			continue ;
-		//print_tokens(head);
 		merging(head, &cmd);
-		printf("%s\n", cmd->av[0]);
+
+		cmd->exit_status = 0;
 		if(cmd)
 		{
-			execute_command(cmd , &head_env , &g_exit_status);
+			execute_command(cmd , envp , &cmd->exit_status);
 			free_cmd_list(cmd);
 		}
 		free_list_tokens(&head);

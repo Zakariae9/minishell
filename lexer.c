@@ -35,7 +35,7 @@ char	*token_with_q(char *command, char q_type, t_token **head)
 	len = get_address_of_closed_quote(command, q_type) - command;
 	temp = ft_substr(command, 1, len - 1);
 	address = new_node(temp, witch_type(command[0], command[1]));
-	if (command[len] != ' ' && command[len] != '|' && command[len] != '<' && command[len] != '>' && command[len])
+	if (command[len + 1] != ' ' && command[len + 1] != '|' && command[len] != '<' && command[len + 1] != '>' && command[len + 1])
 		address->join = true;
 	add_back(head, address);
 	return (command + len + 1);
@@ -56,8 +56,6 @@ char	*token_delemeter(char *command, t_token **head)
 	else
 		temp = ft_substr(command, 0, 1);
 	address = new_node(temp, witch_type(command[0], command[1]));
-	if (command[i] != ' ' && command[i] != '|' && command[i] != '<' && command[i] != '>' && command[i])
-		address->join = true;
 	add_back(head, address);
 	return (command + i);
 }
@@ -73,6 +71,7 @@ char	*token_without_q(char *command, t_token **head)
 		i++;
 	temp = ft_substr(command, 0, i);
 	address = new_node(temp, en_word);
+	// check if should be command[i] or !with_space
 	if (command[i] != ' ' && command[i] != '|' && command[i] != '<' && command[i] != '>' && command[i])
 		address->join = true;
 	add_back(head, address);

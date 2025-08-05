@@ -11,13 +11,16 @@
 #include<signal.h>
 #include<sys/wait.h>
 #include <fcntl.h>
+#include <sys/stat.h>
+
+
 
 
 // \\// Parser
 
 typedef enum n_expand
 {
-	en_expand, en_dont_expand
+	en_expand, en_dont_expand, en_should_not
 }t_expand;
 
 typedef enum n_type
@@ -83,6 +86,7 @@ typedef struct s_cmd
     char			**av;   
     struct s_cmd	*next; 
     t_redirection	*redirection;
+	int exit_status;
 } t_cmd;
 
 //\\ Executer
@@ -115,6 +119,8 @@ bool	check_are_qoutes_open(char *command);
 bool	is_firs_and_last_token_valid(t_token *head);
 int		is_there_anything_else(t_token *head);
 bool	is_there_only$_as_double_q(char *command, t_type type);
+
+
 
 // Expanding
 void	expanding_all_tokens(t_token *head, t_env *env);
@@ -171,7 +177,7 @@ bool	are_bash_rules_correct(t_token *head);
 
 // main
 void	start_minishell(char **env);
-void	read_commands(t_token	**head, t_env *env);
+void	read_commands(char *input ,t_token	**head, t_env *env_head);
 
 
 // Will deleleted
@@ -202,7 +208,7 @@ int				count_arg(t_token *head);
 
 
 
-bool is_builtin(char *cmd);
+int is_builtin(char *cmd);
 int run_builtin(t_cmd *cmd, t_env **env);
 void execute_command(t_cmd *cmd, t_env **env, int *exit_status);
 char *find_cmd_path(char *cmd, t_env *env);
@@ -222,9 +228,12 @@ void ft_exit(char **args);
 int ft_export(char **args, t_env **env);
 int ft_env(t_env *env);
 int ft_unset(t_env **env, char **args);
-bool is_parent_builtin(char *cmd);
+int is_parent_builtin(char *cmd);
 void add_or_update_env(t_env **env, const char *arg);
 
+//signals
+void	setup_signals(void);
+void	sigint_handler(int sig);
 
 
 

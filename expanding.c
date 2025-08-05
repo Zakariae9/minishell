@@ -56,7 +56,10 @@ void	deside_expanding(t_token *head)
 {
 	while (head)
 	{
-		if (head->type == en_word || head->type == en_double_qoute)
+		if (head->type == en_heredoc)
+			head->next->expanding = en_should_not;
+		if ((head->type == en_word || head->type == en_double_qoute)
+			&& head->expanding != en_should_not)
 		{
 			if (num_of_char(head->value, '$') > 0 && !is_there_only$_as_double_q(head->value, head->type))
 				head->expanding = en_expand;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:42:54 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/07/15 08:43:19 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/03 06:23:31 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,36 @@ int ft_pwd(void)
     }
 }
 
+int is_numeric(const char *str)
+{
+    if (!str || !*str)
+        return 0;
+    int i = 0;
+    if (str[0] == '-' || str[0] == '+')
+        i++;
+    for (; str[i]; i++)
+        if (!isdigit((unsigned char)str[i]))
+            return 0;
+    return 1;
+}
+
 void ft_exit(char **av)
 {
-    (void)av;
     printf("exit\n");
+    if (av[1])
+    {
+        if (!is_numeric(av[1]))
+        {
+            fprintf(stderr, "minishell: exit: %s: numeric argument required\n", av[1]);
+            exit(255);
+        }
+        else if (av[2])
+        {
+            fprintf(stderr, "minishell: exit: too many arguments\n");
+            return;
+        }
+        else
+            exit(atoi(av[1]));
+    }
     exit(0);
 }

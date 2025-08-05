@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:43:48 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/07/15 08:45:18 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/03 06:04:12 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,28 @@ int is_valid_identifier(const char *arg)
 }
 
 
-
 int print_export(t_env *env)
 {
     t_env **sorted = sort_env(env);
     int i = 0;
+
     while (sorted[i])
     {
-        write(1, "declare -x ", 11);
-        write(1, sorted[i]->var, ft_strlen(sorted[i]->var));
+        write(STDOUT_FILENO, "declare -x ", 11);
+        write(STDOUT_FILENO, sorted[i]->var, ft_strlen(sorted[i]->var));
         if (sorted[i]->value != NULL)
         {
-            write(1, "=\"", 2);
-            write(1, sorted[i]->value, ft_strlen(sorted[i]->value));
-            write(1, "\"", 1);
+            write(STDOUT_FILENO, "=\"", 2);
+            write(STDOUT_FILENO, sorted[i]->value, ft_strlen(sorted[i]->value));
+            write(STDOUT_FILENO, "\"", 1);
         }
-        write(1, "\n", 1);
+        write(STDOUT_FILENO, "\n", 1);
         i++;
     }
     free(sorted);
     return 0;
 }
+
 
 
 
@@ -146,7 +147,8 @@ int ft_export(char **args, t_env **env)
     {
         if (!is_valid_identifier(args[i]))
         {
-            write(2, "export: `", 9);
+            
+            write(2, "minishell: export: `", 21);
             write(2, args[i], ft_strlen(args[i]));
             write(2, "`: not a valid identifier\n", 27);
         }

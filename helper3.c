@@ -40,7 +40,7 @@ char	*delete_spaces(char *str)
 	j = 0;
 	while (str[i])
 	{
-		while ((str[i] != ' ' || str[i] != '	') && str[i])
+		while (str[i] != ' ' && str[i] != '	' && str[i])
 		{
 			new_str[j] = str[i];
 			j++;
@@ -50,7 +50,8 @@ char	*delete_spaces(char *str)
 			break ;
 		while ((str[i] == ' ' || str[i] == '	') && str[i])
 			i++;
-		new_str[j] = ' ';
+		if (j != 0)//x=" ls   -l  " if i don't do that x will equal " ls -l" instad of "ls -l"
+			new_str[j++] = ' ';
 	}
 	new_str[j] = 0;
 	return (free(str), new_str);
