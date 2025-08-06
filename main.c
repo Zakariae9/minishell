@@ -20,7 +20,7 @@ void	read_commands(char *input ,t_token	**head, t_env *env_head)
 	}
 	else
 		expanding_all_tokens(*head, env_head);
-	fixing_tokens(*head);
+	fixing_tokens(head);
 }
 
 void	start_minishell(char **env)

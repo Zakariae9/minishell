@@ -160,7 +160,7 @@ t_type	witch_type(char c1, char c2);
 int		num_of_char(char *str, char c);
 char	*delete_spaces(char *str);
 void	keep_only_space(t_token *head);
-void	fixing_tokens(t_token *head);
+void	fixing_tokens(t_token **head);
 
 
 
@@ -179,6 +179,8 @@ t_addresses	*node(void *value);
 void		push_back(t_addresses **head, t_addresses *new);
 int			len_list(t_token *head);
 char		*ft_getenv(char *var, t_env *env);
+void		delete_token(t_token **head, t_token *address);
+
 
 
 // temps
@@ -203,7 +205,7 @@ t_env		*new_node_export(char *str);
 t_cmd 			*tokens_to_commands(t_token *tokens);
  void			free_cmd_list(t_cmd *cmd);
  int 			add_redirection(t_cmd *cmd, t_redir_type type, char *file_name);
-int	ft_count_arg(t_token *head);
+int				ft_count_arg(t_token *head);
 bool			is_redirection(t_type type);
 void			merging(t_token *head, t_cmd **cmd);
 //void			fill_redirection_struct(t_token **head_token, t_cmd **cmd);

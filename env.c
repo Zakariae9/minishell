@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 21:36:12 by zaboumei          #+#    #+#             */
+/*   Updated: 2025/08/06 22:19:05 by zaboumei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*new_node_export(char *str)
@@ -116,9 +128,16 @@ void	spliting_token_to_tokens(t_token *head, char c)
 	}
 }
 
-void	fixing_tokens(t_token *head)
+void	fixing_tokens(t_token **head)
 {
-	keep_only_space(head);
-	join_tokens(head);
-	spliting_token_to_tokens(head, ' ');
+	t_token	*current = *head;
+	keep_only_space(*head);
+	join_tokens(*head);
+	spliting_token_to_tokens(*head, ' ');
+	while (current)
+	{
+		if (!current->value[0] && current->expanding == en_expand && current->type == en_word)
+			delete_token(head, current);
+		current = current->next;
+	}
 }

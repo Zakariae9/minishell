@@ -11,8 +11,6 @@ void	expanding_all_tokens(t_token *head, t_env *head_env)
 			helper->value = expanding(helper->value, head_env);
 		helper = helper->next;
 	}
-	// if (len_list(head) > 1)
-	// 	delete_tokens(&head, "");
 }
 
 char	*expanding(char *command, t_env *head_env)
@@ -29,6 +27,8 @@ char	*expanding(char *command, t_env *head_env)
 	while (num--)
 	{
 		helper = get_variable_for_expanding(command, &start, &end_pos);
+		if (helper[1] == '_')
+			
 		env = ft_getenv(helper + 1, head_env);
 		if (env != NULL)
 		{
@@ -68,25 +68,24 @@ void	deside_expanding(t_token *head)
 	}
 }
 
-void	delete_tokens(t_token	**head, char *data)
+void	delete_token(t_token **head, t_token *address)
 {
 	t_token	*current;
 	t_token	*previous;
 
-
 	current = *head;
 	previous = current;
-	while (current)
+	if (current == address)
 	{
-		//if (ft_strcmp(data, current->value) == 0 && current->type == en_word)// echo $h hello or echo "$h" hello
-
-		if (ft_strcmp(data, current->value) == 0)// echo $h hello or echo "$h" hello
-		{
-			previous->next = current->next;
-			free_token(&current);
-			current = previous;
-		}
+		(*head) = current->next;
+		free_token(&current);
+		return ;
+	}
+	while (current != address)
+	{
 		previous = current;
 		current = current->next;
 	}
+	previous->next = current->next;
+	free_token(&current);
 }

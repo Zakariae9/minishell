@@ -86,7 +86,7 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 		if (!is_redirection(head->type))
 		{
 			if (head->type == en_word && !head->value[0])
-				av[i++] = "$";
+				av[i++] = NULL;
 			else
 				av[i++] = head->value;
 			av[i] = NULL;

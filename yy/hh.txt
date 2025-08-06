@@ -83,6 +83,7 @@ minishell>
 minishell> ""e"'c'ho 'b'"o"nj"o"'u'r" 
 [1]    262369 segmentation fault (core dumped)  ./minishell
 
+p (*head)->next->next->next->next->next->next->value
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\
 

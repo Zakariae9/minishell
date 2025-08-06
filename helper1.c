@@ -54,7 +54,7 @@ void	join_tokens(t_token *head)
 		{
 			current->value = ft_strjoin(current->value, current->next->value);
 			current->join = current->next->join;
-			delete_tokens(&head, current->next->value);
+			delete_token(&head, current->next);
 		}
 		current = current->next;
 	}
