@@ -11,8 +11,8 @@ void	expanding_all_tokens(t_token *head, t_env *head_env)
 			helper->value = expanding(helper->value, head_env);
 		helper = helper->next;
 	}
-	if (len_list(head) > 1)
-		delete_tokens(&head, "");
+	// if (len_list(head) > 1)
+	// 	delete_tokens(&head, "");
 }
 
 char	*expanding(char *command, t_env *head_env)
@@ -73,11 +73,14 @@ void	delete_tokens(t_token	**head, char *data)
 	t_token	*current;
 	t_token	*previous;
 
+
 	current = *head;
 	previous = current;
 	while (current)
 	{
-		if (ft_strcmp(data, current->value) == 0)
+		//if (ft_strcmp(data, current->value) == 0 && current->type == en_word)// echo $h hello or echo "$h" hello
+
+		if (ft_strcmp(data, current->value) == 0)// echo $h hello or echo "$h" hello
 		{
 			previous->next = current->next;
 			free_token(&current);

@@ -1,3 +1,4 @@
+
 learminishell> export x="    t    "
 minishell> echo$x
 echo    t    : command not found
@@ -37,29 +38,54 @@ hello
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-minishell> mkdir a
-minishell> cd a/
-minishell> ls
-minishell> rm -rf ../a/
-minishell> pwd
-pwd: No such file or directory
-//////////////////////////////////
-
-bash-5.1$ mkdir h
-bash-5.1$ cd h/
-bash-5.1$ unset PWD
-bash-5.1$ unset OLDPWD
-bash-5.1$ pwd
-/home/mel-hafi/h
-bash-5.1$ rm -rf ../h
-bash-5.1$ pwd
-pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-bash-5.1$ cd ..
-chdir: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-
-/////////////////////////////////////////////?
 
 ~/Desktop/minishell_temp (main*) » ./minishell                                                                                                                                             mel-hafi@c1r1p3
 minishell> export > file \ file>f1
 [1]    319934 segmentation fault (core dumped)  ./minishell
 ///////////////////////////////////////////////
+
+
+
+minishell> cat <<< h
+> 
+//////////////////////////////////////////////
+
+
+ $SDF | "$DF" | SFD                                                     
+/usr/local/sbin/: is a directory
+SFD: command not found
+[1]    354147 segmentation fault (core dumped)  ./minishell
+-----------------------------------------------------------------------------------
+~/Desktop/minishell_temp (main*) » ./minishell              139 ↵ mel-hafi@c1r6p13
+minishell> ""
+/usr/local/sbin/: is a directory
+minishell> $FD  ls
+[1]    354621 segmentation fault (core dumped)  ./minishell
+-----------------------------------------------------------------------------------
+~/Desktop/minishell_temp (main*) » ./minishell              139 ↵ mel-hafi@c1r6p13
+minishell> $DAF ls
+[1]    354709 segmentation fault (core dumped)  ./minishell
+-----------------------------------------------------------------------------------
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+minishell> echo a > a echo b > b
+minishell> cat a
+minishell> cat b
+b
+minishell> 
+parser (command splitting)
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+minishell> echo ""                    hola
+hola
+minishell> 
+\\\\\\\\\\\\\\\\\\\\\\\
+
+minishell> ""e"'c'ho 'b'"o"nj"o"'u'r" 
+[1]    262369 segmentation fault (core dumped)  ./minishell
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+~/Desktop/minishell_temp (main*) » ./minishell                                                                                                                                             mel-hafi@c1r9p1
+minishell> cat
+^C[1]    360499 segmentation fault (core dumped)  ./minishell

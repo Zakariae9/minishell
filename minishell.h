@@ -56,8 +56,10 @@ typedef struct s_token
 	t_type			type;
 	char			*value;
 	bool			join;
+	bool			readed;
 	struct s_token	*next;
 }t_token;
+
 
 //\\ Parser
 
@@ -77,6 +79,7 @@ typedef struct s_redirection
     t_redir_type			type;
     char					*file_name;
     struct s_redirection	*next;
+	int						heredoc_fd;
 }t_redirection;
 
 
@@ -86,8 +89,14 @@ typedef struct s_cmd
     char			**av;   
     struct s_cmd	*next; 
     t_redirection	*redirection;
-	int exit_status;
+	int 			exit_status;
+	int				len;
 } t_cmd;
+
+typedef struct s_pipeline {
+	int *pid;
+	int ac;
+}	t_pipeline;
 
 //\\ Executer
 
@@ -119,6 +128,9 @@ bool	check_are_qoutes_open(char *command);
 bool	is_firs_and_last_token_valid(t_token *head);
 int		is_there_anything_else(t_token *head);
 bool	is_there_only$_as_double_q(char *command, t_type type);
+bool	is_equal_redirection(t_type type);
+bool	check_redirection(t_token *head);
+
 
 
 
@@ -191,11 +203,13 @@ t_env		*new_node_export(char *str);
 t_cmd 			*tokens_to_commands(t_token *tokens);
  void			free_cmd_list(t_cmd *cmd);
  int 			add_redirection(t_cmd *cmd, t_redir_type type, char *file_name);
- int 			count_args(t_token *token);
+int	ft_count_arg(t_token *head);
 bool			is_redirection(t_type type);
 void			merging(t_token *head, t_cmd **cmd);
-void			fill_redirection_struct(t_token **head_token, t_cmd **cmd);
-void			fill_av(int arg_num, char **av, t_token **head);
+//void			fill_redirection_struct(t_token **head_token, t_cmd **cmd);
+void			fill_redirection_struct(t_token *head_token, t_cmd **cmd);
+
+void			fill_av(int arg_num, char **av, char *args, t_token **head);
 t_cmd			*new_node_cmd();
 t_redirection	*new_node_redirection(t_token *head_token);
 t_redir_type	redir_type(t_type type);
@@ -206,17 +220,65 @@ int				count_arg(t_token *head);
 
 
 
+//execute
+void	execute_command(t_cmd *cmd, t_env **env, int *exit_status);
+void	start_pipeline(t_cmd *cmd, t_env *env, int *exit_status);
+void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac);
+void	wait_for_children(int *pid, int ac, int *exit_status);
+int	has_redirection(t_cmd *cmd);
 
+
+
+
+
+
+
+//execute 2
+
+void	check_executable_validity(char *path);
+char	*resolve_executable_path_or_exit(t_cmd *cmd, t_env *env);
+void	run_execve(t_cmd *cmd, t_env *env);
+void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *pipefd);
+char	**convert_env_to_array(t_env *env);
+
+//execute3
+
+char	*find_path_value(t_env *env);
+char	*search_cmd_in_paths(char **paths, char *cmd);
+char	*find_cmd_path(char *cmd, t_env *env);
+char	*join_var_value(const char *var, const char *value);
+int	fill_env_array(t_env *env, char **array, size_t count);
+
+//export
+int ft_export(char **args, t_env **env);
+void add_or_update_env(t_env **env, const char *arg);
+void update_or_append_env(t_env **env, char *name, char *value, int has_equal);
+int print_export(t_env *env);
+
+
+//export_help.c
+void sort_env_array(t_env **array, int size);
+t_env **sort_env(t_env *env);
+int is_valid_identifier(const char *arg);
+
+
+
+//////////////
 
 int is_builtin(char *cmd);
 int run_builtin(t_cmd *cmd, t_env **env);
-void execute_command(t_cmd *cmd, t_env **env, int *exit_status);
-char *find_cmd_path(char *cmd, t_env *env);
-int handle_redirections(t_redirection *redir_list);
-char **convert_env_to_array(t_env *env);
-char *join_path(const char *dir , const char *cmd);
-void execute(t_cmd *cmd, t_env **g_env, int *g_exit_status);
 
+//redirections.c
+
+int handle_redir_in(const char *file);
+int handle_redir_out(const char *file);
+int handle_redir_append(const char *file);
+int handle_redirections(t_redirection *redir_list);
+
+//herdoc.c
+
+int handle_heredoc(const char *delimiter);
+int prepare_all_heredocs(t_cmd *cmd_list);
 
 
 
@@ -225,16 +287,14 @@ int ft_cd(char **args, t_env **env);
 int ft_echo(t_cmd *cmd);
 int ft_pwd(void);
 void ft_exit(char **args);
-int ft_export(char **args, t_env **env);
 int ft_env(t_env *env);
 int ft_unset(t_env **env, char **args);
 int is_parent_builtin(char *cmd);
-void add_or_update_env(t_env **env, const char *arg);
+
 
 //signals
-void	setup_signals(void);
 void	sigint_handler(int sig);
-
+void	setup_signals();
 
 
 
@@ -263,4 +323,3 @@ void	free_env(t_env *env);
 
 
 #endif
-

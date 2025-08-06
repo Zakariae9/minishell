@@ -49,13 +49,13 @@ void	start_minishell(char **env)
 		if (!head)
 			continue ;
 		merging(head, &cmd);
-
 		cmd->exit_status = 0;
+		// printf("%s\n", cmd->av[0]);
 		if(cmd)
 		{
 			execute_command(cmd , envp , &cmd->exit_status);
 			free_cmd_list(cmd);
-		}
+		}		
 		free_list_tokens(&head);
 	}
 }

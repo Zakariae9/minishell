@@ -67,13 +67,15 @@ char	*token_without_q(char *command, t_token **head)
 	t_token	*address;
 
 	i = 0;
-	while (command[i] != ' ' && command[i] != '|' && command[i] != '>' && command[i] != '<' && command[i] != '\0' && command[i] != '\'' && command[i] != '\"')
+	//while (command[i] != ' ' && command[i] != '|' && command[i] != '>' && command[i] != '<' && command[i] != '\0' && command[i] != '\'' && command[i] != '\"')
+	while (ft_strchr(" |><\'\"\0", command[i]) == NULL)
 		i++;
 	temp = ft_substr(command, 0, i);
 	address = new_node(temp, en_word);
 	// check if should be command[i] or !with_space
-	if (command[i] != ' ' && command[i] != '|' && command[i] != '<' && command[i] != '>' && command[i])
+	if (ft_strchr(" |<>\0", command[i]) == NULL)
 		address->join = true;
+	//if (command[i] != ' ' && command[i] != '|' && command[i] != '<' && command[i] != '>' && command[i])
 	add_back(head, address);
 	return (command + i);
 }

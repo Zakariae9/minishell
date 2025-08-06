@@ -1,54 +1,59 @@
-#include"minishell.h"
+#include "minishell.h"
 
 void	ft_putstr(char *s)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (s[i])
 	{
 		write(1, &s[i], 1);
 		i++;
 	}
 }
-void ft_putchar(char c)
+void	ft_putchar(char c)
 {
-    write(1,&c,1);
+	write(1, &c, 1);
 }
-char *ft_strcpyy(char *dest, const char *src)
+char	*ft_strcpyy(char *dest, const char *src)
 {
-    int i = 0;
-    
-    while (src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
-    return dest;
-}
+	int	i;
 
-char *ft_strcat(char *dest, const char *src)
-{
-    int i = 0;
-    int j = 0;
-
-    while (dest[i] != '\0')
-    {
-        i++;
-    }
-    while (src[j] != '\0')
-    {
-        dest[i] = src[j];
-        i++;
-        j++;
-    }
-
-    dest[i] = '\0';
-    return dest;
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-void free_env_list(t_env *env)
+char	*ft_strcat(char *dest, const char *src)
 {
-	t_env *tmp;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (dest[i] != '\0')
+	{
+		i++;
+	}
+	while (src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*tmp;
+
 	while (env)
 	{
 		tmp = env;
@@ -58,14 +63,16 @@ void free_env_list(t_env *env)
 		free(tmp);
 	}
 }
-void free_array(char **arr)
+void	free_array(char **arr)
 {
-    int i = 0;
-    if (!arr)
-        return;
-    while (arr[i])
-        free(arr[i++]);
-    free(arr);
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
@@ -96,8 +103,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	s[i] = '\0';
 	return (s);
 }
-
-
 
 int	count_word(const char *s, char c)
 {
@@ -201,4 +206,8 @@ char	**ft_split(const char *s, char c)
 	}
 	str[j] = NULL;
 	return (str);
+}
+int has_redirection(t_cmd *cmd)
+{
+    return (cmd->redirection != NULL);
 }

@@ -34,9 +34,25 @@ bool	is_firs_and_last_token_valid(t_token *head)
 	return (true);
 }
 
+bool	is_equal_redirection(t_type type)
+{
+	return (!(type == en_single_qoute || type == en_double_qoute || type == en_word));
+}
+
+bool	check_redirection(t_token *head)
+{
+	while (head)
+	{
+		if (is_equal_redirection(head->type) && is_equal_redirection(head->next->type))
+			return (true);
+		head = head->next;
+	}
+	return (false);
+}
+
 bool	are_bash_rules_correct(t_token *head)
 {
-	if (is_firs_and_last_token_valid(head) && !is_there_anything_else(head))
+	if (is_firs_and_last_token_valid(head) && !is_there_anything_else(head) && !check_redirection(head))
 		return (1);
 	return (0);
 }

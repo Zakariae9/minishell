@@ -1,17 +1,18 @@
 #include "minishell.h"
-int	count_arg(t_token *head)
+
+int	ft_count_arg(t_token *head)
 {
 	int	counter;
 
 	counter = 0;
 	while (head)
 	{
-		if (head->type == en_word ||
-			head->type == en_double_qoute ||
-			head->type == en_single_qoute)
+		if (!is_redirection(head->type) && head->type != en_pip)
 			counter++;
-		else
+		if (head->type == en_pip)
 			return (counter);
+		if (is_redirection(head->type))
+			head = head->next;
 		head = head->next;
 	}
 	return (counter);
@@ -48,47 +49,83 @@ t_cmd	*new_node_cmd()
 	cmd->av = NULL;
 	cmd->next = NULL;
 	cmd->redirection = NULL;
+	cmd->exit_status = 0;
+	cmd->len = 0;
 	return (cmd);
 }
 
-void	fill_av(int arg_num, char **av, t_token **head)
-{
-	int		i;
 
+// char	**new_av(char **old_av, int arg_num)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**av;
+
+// 	i = 0;
+// 	j = 0;
+// 	av = malloc(sizeof(char *) * (1 + arg_num));
+// 	while (old_av[i])
+// 	{
+// 		if (ft_strcmp(old_av[i], "$"))
+// 			av[j++] = old_av[i];
+// 		i++;
+// 	}
+// 	return (av);
+// }
+
+void	fill_cmd_args(t_cmd **cmd, t_token *head)
+{
+	char	**av;
+	int		i;
+	
 	i = 0;
-	while (i < arg_num)
+	(*cmd)->len = ft_count_arg(head);
+	av = malloc(sizeof(char *) * ((*cmd)->len + 1));
+	while (head && head->type != en_pip)
 	{
-		av[arg_num] = NULL;
-		av[i] = (*head)->value;
-		*head = (*head)->next;
-		i++;
+		if (!is_redirection(head->type))
+		{
+			if (head->type == en_word && !head->value[0])
+				av[i++] = "$";
+			else
+				av[i++] = head->value;
+			av[i] = NULL;
+			head->readed = true;
+		}
+		else
+			head = head->next;
+		head = head->next;
 	}
+	(*cmd)->av = av;
 }
 
-void	fill_redirection_struct(t_token **head_token, t_cmd **cmd)
+
+
+void	fill_redirection_struct(t_token *head_token, t_cmd **cmd)
 {
 	t_cmd			*currernt_cmd;
 	t_redirection	*new;
-	t_token			*current_token;
 
-	current_token = *head_token;
 	currernt_cmd = *cmd;
-	new = new_node_redirection(current_token);
-	if (!currernt_cmd->redirection)
-		currernt_cmd->redirection = new;
-	else
-		currernt_cmd->redirection->next = new;
-	(*head_token) = (*head_token)->next->next;
+	while (head_token && head_token->type != en_pip)
+	{
+		if (!head_token->readed)
+		{
+			new = new_node_redirection(head_token);
+			if (!currernt_cmd->redirection)
+				currernt_cmd->redirection = new;
+			else
+				currernt_cmd->redirection->next = new;
+			head_token = head_token->next;
+		}
+		head_token = head_token->next;
+	}
 }
 
 void	merging(t_token *head, t_cmd **cmd)
 {
-	//int		i;
-	int		arg_num;
 	t_cmd	*current;
-	char	**av;
 	
-	//i = 0;
 	*cmd = new_node_cmd();
 	current = *cmd;
 	while (head)
@@ -99,12 +136,9 @@ void	merging(t_token *head, t_cmd **cmd)
 			current = current->next;
 			head = head->next;
 		}
-		arg_num = count_arg(head);
-		if (!current->av) // If i already fill av but i want to fill redirection again
-			av = malloc(sizeof(char *) * (arg_num + 1));
-		fill_av(arg_num, av, &head);
-		if (head && is_redirection(head->type))
-			fill_redirection_struct(&head, &current);
-		current->av = av;
+		fill_cmd_args(&current, head);
+		fill_redirection_struct(head, &current);
+		while (head && head->type != en_pip)
+			head = head->next;
 	}
 }

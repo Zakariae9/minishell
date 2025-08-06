@@ -7,6 +7,7 @@ t_token	*new_node(char *str, t_type type)
 	node->value = str;
 	node->type = type;
 	node->join = false;
+	node->readed = false;
 	node->expanding = en_dont_expand;
 	node->next = NULL;
 	return (node);
