@@ -12,11 +12,23 @@
 #include<sys/wait.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include<limits.h>
 
 
 
 
 // \\// Parser
+
+typedef struct s_expand_var
+{
+	int			end_pos;
+	int			start;
+	int			num;
+	char		*env;
+	char		*helper;
+}t_expand_var;
+
+
 
 typedef enum n_expand
 {
@@ -121,22 +133,23 @@ char		*delete_part(char *old_str, char *deleted_str);
 char		*add_str(char *old_str, char *added_str, int pos);
 size_t		ft_strcpy(char *dst, const char *src);
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);
+char		*ft_itoa(int n);
+
 
 
 // check_errores
 bool	check_are_qoutes_open(char *command);
 bool	is_firs_and_last_token_valid(t_token *head);
 int		is_there_anything_else(t_token *head);
-bool	is_there_only$_as_double_q(char *command, t_type type);
-bool	is_equal_redirection(t_type type);
+bool	is_there_only$(char *command, t_type type);
 bool	check_redirection(t_token *head);
 
 
 
 
 // Expanding
-void	expanding_all_tokens(t_token *head, t_env *env);
-char	*expanding(char *command, t_env *env);
+void	expanding_all_tokens(t_token *head, t_env *env, int *exit_status);
+char	*expanding(char *command, t_env *env, int *exit_status);
 char	*get_variable_for_expanding(char *command, int *start, int *end_pos);
 void	deside_expanding(t_token *head);
 void	delete_tokens(t_token	**head, char *data);
@@ -183,6 +196,7 @@ void		delete_token(t_token **head, t_token *address);
 
 
 
+
 // temps
 void	WriteType(t_type type);
 void	print_tokens(t_token *head);
@@ -191,7 +205,7 @@ bool	are_bash_rules_correct(t_token *head);
 
 // main
 void	start_minishell(char **env);
-void	read_commands(char *input ,t_token	**head, t_env *env_head);
+void	read_commands(char *input ,t_token	**head, t_env *env_head, int *exit_status);
 
 
 // Will deleleted
@@ -317,8 +331,7 @@ int ft_isalnum(int c);
 char *ft_strcpyy(char *dest, const char *src);
 char *ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
-
-// free
+int	ft_str_to_ll(const char *str, long long *out);
 void free_array(char **arr);
 void	free_cmd_list(t_cmd *cmd);
 void	free_env(t_env *env);

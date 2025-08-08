@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:42:54 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 14:32:36 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:02:50 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	ft_echo(t_cmd *cmd)
 			write(1, " ", 1);
 		i++;
 	}
-	if (newline)
-		write(1, "\n", 1);
-	return (0);
+	if(newline)
+		return (write(1, "\n", 1), 0);
+	return 0;
 }
 
 int	ft_pwd(void)
@@ -94,22 +94,23 @@ int	is_numeric(const char *str)
 
 void	ft_exit(char **av)
 {
+	long long	code;
+
 	printf("exit\n");
 	if (av[1])
 	{
-		if (!is_numeric(av[1]))
+		if (!is_numeric(av[1]) || !ft_str_to_ll(av[1], &code))
 		{
 			fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
 				av[1]);
 			exit(2);
 		}
-		else if (av[2])
+		if (av[2])
 		{
 			fprintf(stderr, "minishell: exit: too many arguments\n");
 			return ;
 		}
-		else
-			exit(atoi(av[1]));
+		exit((unsigned char)code);
 	}
 	exit(0);
 }

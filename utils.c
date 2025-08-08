@@ -211,3 +211,52 @@ int has_redirection(t_cmd *cmd)
 {
     return (cmd->redirection != NULL);
 }
+#include <stdio.h>
+
+#include <stdio.h>
+
+int	ft_str_to_ll(const char *str, long long *out)
+{
+	int			i = 0;
+	int			sign = 1;
+	long long	result = 0;
+	const long long LLONG_MAX_VAL = 9223372036854775807LL;
+	const long long LLONG_MIN_VAL = (-9223372036854775807LL - 1);
+
+	if (!str || !*str)
+		return (0);
+
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+
+	if (str[i] == '\0')
+		return (0);
+
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		int digit = str[i] - '0';
+
+		if (sign == 1)
+		{
+			if (result > (LLONG_MAX_VAL - digit) / 10)
+				return (0);
+		}
+		else
+		{
+			if (-result < (LLONG_MIN_VAL + digit) / 10)
+				return (0);
+		}
+		result = result * 10 + digit;
+		i++;
+	}
+
+	*out = sign * result;
+	return (1);
+}
+

@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void	fill_str(char const *str1, char const *str2, char *buffer)
 {

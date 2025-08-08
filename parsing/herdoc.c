@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:50 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 05:41:51 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:34:47 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../minishell.h"
+#include "../minishell.h"
 
 void heredoc_sigint_handler(int sig)
 {

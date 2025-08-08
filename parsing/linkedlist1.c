@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 t_token	*new_node(char *str, t_type type)
 {

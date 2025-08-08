@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*get_address_of_closed_quote(char *command, char original_quote)
 {

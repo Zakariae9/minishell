@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void WriteType(t_type type)
 {

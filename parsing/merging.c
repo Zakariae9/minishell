@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_count_arg(t_token *head)
 {
@@ -55,24 +55,6 @@ t_cmd	*new_node_cmd()
 }
 
 
-// char	**new_av(char **old_av, int arg_num)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	**av;
-
-// 	i = 0;
-// 	j = 0;
-// 	av = malloc(sizeof(char *) * (1 + arg_num));
-// 	while (old_av[i])
-// 	{
-// 		if (ft_strcmp(old_av[i], "$"))
-// 			av[j++] = old_av[i];
-// 		i++;
-// 	}
-// 	return (av);
-// }
-
 void	fill_cmd_args(t_cmd **cmd, t_token *head)
 {
 	char	**av;
@@ -98,8 +80,6 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	}
 	(*cmd)->av = av;
 }
-
-
 
 void	fill_redirection_struct(t_token *head_token, t_cmd **cmd)
 {

@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*add_str(char *old_str, char *added_str, int pos)
 {
