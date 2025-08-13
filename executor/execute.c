@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 03:26:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/07 11:01:31 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:26:30 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	execute_command(t_cmd *cmd, t_env **env, int *exit_status)
 		return ((void)(*exit_status = 130));
 	if (hd_status != 0)
 		return ((void)(*exit_status = 1));
-	if (!cmd->next && is_builtin(cmd->av[0]) && is_parent_builtin(cmd->av[0])
+	if (cmd->av && !cmd->next && is_builtin(cmd->av[0]) && is_parent_builtin(cmd->av[0])
 		&& !has_redirection(cmd))
 	{
 		*exit_status = run_builtin(cmd, env);

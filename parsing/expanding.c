@@ -3,6 +3,7 @@
 void	expanding_all_tokens(t_token *head, t_env *head_env, int *exit_status)
 {
 	t_token	*helper;
+
 	helper = head;
 	deside_expanding(helper);
 	while (helper)

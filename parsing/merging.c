@@ -63,6 +63,9 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	i = 0;
 	(*cmd)->len = ft_count_arg(head);
 	av = malloc(sizeof(char *) * ((*cmd)->len + 1));
+	// add the following check
+	if ((*cmd)->len == 0)
+		av = NULL;
 	while (head && head->type != en_pip)
 	{
 		if (!is_redirection(head->type))
@@ -81,21 +84,28 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	(*cmd)->av = av;
 }
 
+t_redirection	*last_redirection(t_redirection *redirection)
+{
+	while (redirection->next)
+		redirection = redirection->next;
+	return (redirection);
+}
+
 void	fill_redirection_struct(t_token *head_token, t_cmd **cmd)
 {
-	t_cmd			*currernt_cmd;
+	t_cmd			*current_cmd;
 	t_redirection	*new;
 
-	currernt_cmd = *cmd;
+	current_cmd = *cmd;
 	while (head_token && head_token->type != en_pip)
 	{
 		if (!head_token->readed)
 		{
 			new = new_node_redirection(head_token);
-			if (!currernt_cmd->redirection)
-				currernt_cmd->redirection = new;
+			if (!current_cmd->redirection)
+				current_cmd->redirection = new;
 			else
-				currernt_cmd->redirection->next = new;
+				last_redirection(current_cmd->redirection)->next = new;
 			head_token = head_token->next;
 		}
 		head_token = head_token->next;
