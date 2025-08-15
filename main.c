@@ -48,7 +48,7 @@ void	start_minishell(char **env)
 		read_commands(input ,&head ,head_env);
 		free(input);
 		if (!head)
-		continue ;
+			continue ;
 		merging(head, &cmd);
 		if(cmd)
 		{

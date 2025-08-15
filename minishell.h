@@ -19,6 +19,13 @@
 
 // \\// Parser
 
+typedef struct t_list
+{
+	void	*content;
+	struct	t_list *next;
+}t_list;
+
+
 typedef struct s_expand_var
 {
 	int			end_pos;
@@ -28,7 +35,10 @@ typedef struct s_expand_var
 	char		*helper;
 }t_expand_var;
 
-
+typedef enum n_gc
+{
+	en_malloc, en_free, en_add_back
+}t_gc;
 
 typedef enum n_expand
 {
@@ -341,6 +351,11 @@ void free_array(char **arr);
 void	free_cmd_list(t_cmd *cmd);
 void	print_error_exit(char *msg, char *arg, int code);
 
+// garbade colactor
+void	*gc_malloc(void *lst, t_gc gc, size_t size);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+t_list	*ft_lstnew(void *content);
+void	ft_lstclear(t_list **lst);
 
 
 
