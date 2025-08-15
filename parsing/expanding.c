@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	expanding_all_tokens(t_token *head, t_env *head_env, int *exit_status)
+void	expanding_all_tokens(t_token *head, t_env *head_env)
 {
 	t_token	*helper;
 
@@ -9,22 +9,22 @@ void	expanding_all_tokens(t_token *head, t_env *head_env, int *exit_status)
 	while (helper)
 	{
 		if (helper->expanding == en_expand)
-			helper->value = expanding(helper->value, head_env, exit_status);
+			helper->value = expanding(helper->value, head_env);
 		helper = helper->next;
 	}
 }
 
-char	*expand_exit_status(char *command, t_expand_var *expand, t_addresses **head, int *exit_status)
+char	*expand_exit_status(char *command, t_expand_var *expand, t_addresses **head)
 {
 	push_back(head, node(command));
-	command = add_str(command, ft_itoa(*exit_status), expand->start);
+	command = add_str(command, ft_itoa(get_exit_code(-1)), expand->start);
 	push_back(head, node(command));
 	command = delete_part(command, expand->helper);
 	push_back(head, node(expand->helper));
 	return (command);
 }
 
-char	*expanding(char *command, t_env *head_env, int *exit_status)
+char	*expanding(char *command, t_env *head_env)
 {
 	t_expand_var	expand;
 	t_addresses	*head;
@@ -36,7 +36,7 @@ char	*expanding(char *command, t_env *head_env, int *exit_status)
 		expand.helper = get_variable_for_expanding(command, &expand.start, &expand.end_pos);
 		if (!ft_strcmp(expand.helper, "$?"))
 		{
-			command = expand_exit_status(command, &expand, &head, exit_status);
+			command = expand_exit_status(command, &expand, &head);
 			continue ;
 		}
 		expand.env = ft_getenv(expand.helper + 1, head_env);
@@ -71,7 +71,7 @@ void	deside_expanding(t_token *head)
 		if ((head->type == en_word || head->type == en_double_qoute)
 			&& head->expanding != en_should_not)
 		{
-			if (num_of_char(head->value, '$') > 0 && !is_there_only$(head->value, head->type))
+			if (num_of_char(head->value, '$') > 0 && !is_there_only_dolor(head->value, head->type))
 				head->expanding = en_expand;
 		}
 		head = head->next;

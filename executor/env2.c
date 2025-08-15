@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:42:54 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/07 11:02:50 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:29:20 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ int	ft_echo(t_cmd *cmd)
 			write(1, " ", 1);
 		i++;
 	}
-	if(newline)
-		return (write(1, "\n", 1), 0);
-	return 0;
+	return (newline && write(1, "\n", 1), 0);
 }
 
 int	ft_pwd(void)

@@ -11,7 +11,7 @@ bool	check_redirection(t_token *head)
 	return (false);
 }
 
-bool	is_there_only$(char *command, t_type type)
+bool	is_there_only_dolor(char *command, t_type type)
 {
 	command = ft_strchr(command, '$');
 	if (type == en_word)

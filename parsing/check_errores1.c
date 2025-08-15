@@ -1,7 +1,5 @@
 #include "../minishell.h"
 
-#include "../minishell.h"
-
 bool	check_are_qoutes_open(char *command)
 {
 	char	qoute;
@@ -26,7 +24,7 @@ bool	check_are_qoutes_open(char *command)
 
 bool	is_firs_and_last_token_valid(t_token *head)
 {
-	if ((head->type == en_pip))
+	if (head->type == en_pip)
 		return (false);
 	while (head->next)
 		head = head->next;

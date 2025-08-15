@@ -90,6 +90,7 @@ typedef struct s_redirection
 {
     t_redir_type			type;
     char					*file_name;
+	bool					qoute;
     struct s_redirection	*next;
 	int						heredoc_fd;
 }t_redirection;
@@ -101,7 +102,6 @@ typedef struct s_cmd
     char			**av;   
     struct s_cmd	*next; 
     t_redirection	*redirection;
-	int 			exit_status;
 	int				len;
 } t_cmd;
 
@@ -141,19 +141,20 @@ char		*ft_itoa(int n);
 bool	check_are_qoutes_open(char *command);
 bool	is_firs_and_last_token_valid(t_token *head);
 int		is_there_anything_else(t_token *head);
-bool	is_there_only$(char *command, t_type type);
+bool	is_there_only_dolor(char *command, t_type type);
 bool	check_redirection(t_token *head);
 
 
 
 
 // Expanding
-void	expanding_all_tokens(t_token *head, t_env *env, int *exit_status);
-char	*expanding(char *command, t_env *env, int *exit_status);
+void	expanding_all_tokens(t_token *head, t_env *env);
+char	*expanding(char *command, t_env *env);
 char	*get_variable_for_expanding(char *command, int *start, int *end_pos);
 void	deside_expanding(t_token *head);
 void	delete_tokens(t_token	**head, char *data);
 char	*ft_getenv(char *variable, t_env *head);
+char	*expand_exit_status(char *command, t_expand_var *expand, t_addresses **head);
 
 // Free
 char	*free2d_ar(char **str);
@@ -205,7 +206,7 @@ bool	are_bash_rules_correct(t_token *head);
 
 // main
 void	start_minishell(char **env);
-void	read_commands(char *input ,t_token	**head, t_env *env_head, int *exit_status);
+void	read_commands(char *input ,t_token	**head, t_env *env_head);
 
 
 // Will deleleted
@@ -236,11 +237,12 @@ int				count_arg(t_token *head);
 
 
 
+
 //execute
-void	execute_command(t_cmd *cmd, t_env **env, int *exit_status);
-void	start_pipeline(t_cmd *cmd, t_env *env, int *exit_status);
+void	execute_command(t_cmd *cmd, t_env **env);
+void	start_pipeline(t_cmd *cmd, t_env *env);
 void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac);
-void	wait_for_children(int *pid, int ac, int *exit_status);
+void	wait_for_children(int *pid, int ac);
 int	has_redirection(t_cmd *cmd);
 
 
@@ -263,7 +265,7 @@ char	*find_path_value(t_env *env);
 char	*search_cmd_in_paths(char **paths, char *cmd);
 char	*find_cmd_path(char *cmd, t_env *env);
 char	*join_var_value(const char *var, const char *value);
-int	fill_env_array(t_env *env, char **array, size_t count);
+int	fill_env_array(t_env *env, char **array, int count);
 
 //export
 int ft_export(char **args, t_env **env);
@@ -290,11 +292,12 @@ int handle_redir_in(const char *file);
 int handle_redir_out(const char *file);
 int handle_redir_append(const char *file);
 int handle_redirections(t_redirection *redir_list);
+int handle_one_redirection(t_redirection *redir);
 
 //herdoc.c
 
-int handle_heredoc(const char *delimiter);
-int prepare_all_heredocs(t_cmd *cmd_list);
+int prepare_all_heredocs(t_cmd *cmd_list, t_env	*env);
+int	handle_heredoc(char *delimiter, t_env *env, bool qoute);
 
 
 
@@ -310,9 +313,11 @@ int is_parent_builtin(char *cmd);
 
 //signals
 void	sigint_handler(int sig);
-void	setup_signals();
-
-
+void set_signals_child_default(void);
+void sig_quit_handler(int sig);
+void	set_signals_parent_interactive(void);
+void set_signals_parent_ignore(void);
+int get_exit_code(int exit_code);
 
 // utils
 int ft_strcmp(const char *s1, const char *s2);
@@ -334,7 +339,9 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int	ft_str_to_ll(const char *str, long long *out);
 void free_array(char **arr);
 void	free_cmd_list(t_cmd *cmd);
-void	free_env(t_env *env);
+void	print_error_exit(char *msg, char *arg, int code);
+
+
 
 
 #endif

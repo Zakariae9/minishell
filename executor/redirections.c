@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 05:47:52 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/09 04:10:26 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,38 @@ int	handle_redir_append(const char *file)
 	return (0);
 }
 
+int	handle_one_redirection(t_redirection *redir)
+{
+	if (redir->type == REDIR_IN)
+		return (handle_redir_in(redir->file_name));
+	if (redir->type == REDIR_OUT)
+		return (handle_redir_out(redir->file_name));
+	if (redir->type == REDIR_APPEND)
+		return (handle_redir_append(redir->file_name));
+	if (redir->type == REDIR_HEREDOC)
+	{
+		if (dup2(redir->heredoc_fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2 heredoc");
+			close(redir->heredoc_fd);
+			return (1);
+		}
+		close(redir->heredoc_fd);
+		return (0);
+	}
+	return (0);
+}
+
 int	handle_redirections(t_redirection *redir_list)
 {
 	t_redirection	*curr;
-	int				last_heredoc_fd;
 
 	curr = redir_list;
-	last_heredoc_fd = -1;
 	while (curr)
 	{
-		if (curr->type == REDIR_IN && handle_redir_in(curr->file_name))
+		if (handle_one_redirection(curr))
 			return (1);
-		else if (curr->type == REDIR_OUT && handle_redir_out(curr->file_name))
-			return (1);
-		else if (curr->type == REDIR_APPEND
-			&& handle_redir_append(curr->file_name))
-			return (1);
-		else if (curr->type == REDIR_HEREDOC)
-			last_heredoc_fd = curr->heredoc_fd;
 		curr = curr->next;
-	}
-	if (last_heredoc_fd != -1)
-	{
-		if (dup2(last_heredoc_fd, STDIN_FILENO) == -1)
-			return (perror("dup2 heredoc"), close(last_heredoc_fd), 1);
-		close(last_heredoc_fd);
 	}
 	return (0);
 }

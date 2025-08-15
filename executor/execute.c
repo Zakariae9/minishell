@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 03:26:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/13 12:26:30 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:42:20 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,63 @@
 
 extern int	g_sig_s;
 
-void	wait_for_children(int *pid, int ac, int *exit_status)
+void	wait_for_children(int *pid, int ac)
 {
 	int	i;
 	int	status;
+	int	sig;
+	int	printed_newline;
 
-	i = 0;
-	while (i < ac)
+	printed_newline = 0;
+	i = -1;
+	while (++i < ac && waitpid(pid[i], &status, 0) > 0)
 	{
-		waitpid(pid[i++], &status, 0);
-		*exit_status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == SIGINT && !printed_newline++)
+				write(1, "\n", 1);
+			else if (sig == SIGQUIT)
+				write(1, "Quit\n", 5);
+			get_exit_code(128 + sig);	
+			// *exit_status = 128 + sig;
+		}
+		else
+		{
+			get_exit_code(WEXITSTATUS(status));
+			// *exit_status = WEXITSTATUS(status);
+		}	
 	}
 	free(pid);
 	g_sig_s = 0;
+	set_signals_parent_interactive();
+}
+
+int	fork_and_exec_cmd(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2])
+{
+	pid_t	pid;
+
+	if (cmd->next && pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		
+		get_exit_code(1);
+		return (-1);
+	}
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		get_exit_code(1);
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		set_signals_child_default();
+		child_process(cmd, env, prev_fd, pipefd);
+	}
+	return (pid);
 }
 
 void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac)
@@ -36,16 +80,14 @@ void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac)
 	int		pipefd[2];
 	t_cmd	*head;
 
-	(1) && (i = -1, prev_fd = -1, head = cmd);
+	i = 0;
+	prev_fd = -1;
+	head = cmd;
 	while (cmd)
 	{
-		if (cmd->next && pipe(pipefd) == -1)
-			return ((void)(perror("pipe"), cmd->exit_status = 1));
-		pid[++i] = fork();
+		pid[i] = fork_and_exec_cmd(cmd, env, prev_fd, pipefd);
 		if (pid[i] == -1)
-			return ((void)(perror("fork"), cmd->exit_status = 1));
-		if (pid[i] == 0)
-			child_process(cmd, env, prev_fd, pipefd);
+			return ;
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -54,11 +96,13 @@ void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac)
 			prev_fd = pipefd[0];
 		}
 		cmd = cmd->next;
+		i++;
 	}
-	wait_for_children(pid, ac, &head->exit_status);
+	set_signals_parent_ignore();
+	wait_for_children(pid, ac);
 }
 
-void	start_pipeline(t_cmd *cmd, t_env *env, int *exit_status)
+void	start_pipeline(t_cmd *cmd, t_env *env)
 {
 	int		ac;
 	t_cmd	*tmp;
@@ -76,26 +120,32 @@ void	start_pipeline(t_cmd *cmd, t_env *env, int *exit_status)
 	if (!pid)
 	{
 		perror("malloc");
-		*exit_status = 1;
+		get_exit_code(1);
 		return ;
 	}
 	run_pipeline(cmd, env, pid, ac);
 }
 
-void	execute_command(t_cmd *cmd, t_env **env, int *exit_status)
+void	execute_command(t_cmd *cmd, t_env **env)
 {
 	int	hd_status;
 
-	hd_status = prepare_all_heredocs(cmd);
+	hd_status = prepare_all_heredocs(cmd, *env);
 	if (hd_status == 130)
-		return ((void)(*exit_status = 130));
-	if (hd_status != 0)
-		return ((void)(*exit_status = 1));
-	if (cmd->av && !cmd->next && is_builtin(cmd->av[0]) && is_parent_builtin(cmd->av[0])
-		&& !has_redirection(cmd))
 	{
-		*exit_status = run_builtin(cmd, env);
+		get_exit_code(130);
 		return ;
 	}
-	start_pipeline(cmd, *env, exit_status);
+	if (hd_status != 0)
+	{
+		get_exit_code(1);
+		return ;
+	}
+	if (cmd->av && !cmd->next && is_parent_builtin(cmd->av[0])
+		&& !has_redirection(cmd))
+	{
+		get_exit_code(run_builtin(cmd , env));
+		return ;
+	}
+	start_pipeline(cmd, *env);
 }

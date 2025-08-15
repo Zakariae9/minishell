@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:48:22 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 04:29:17 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:43:37 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ char	*find_cmd_path(char *cmd, t_env *env)
 
 char	*join_var_value(const char *var, const char *value)
 {
-	size_t	len_var;
-	size_t	len_value;
+	int		len_var;
+	int		len_value;
 	char	*result;
 
 	len_var = strlen(var);
@@ -87,11 +87,11 @@ char	*join_var_value(const char *var, const char *value)
 	return (result);
 }
 
-int	fill_env_array(t_env *env, char **array, size_t count)
+int	fill_env_array(t_env *env, char **array, int count)
 {
-	size_t	i;
+	int		i;
+	int		j;
 	t_env	*tmp;
-	size_t	j;
 
 	i = 0;
 	tmp = env;

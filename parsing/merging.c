@@ -37,6 +37,7 @@ t_redirection	*new_node_redirection(t_token *head_token)
 	new_redir = malloc(sizeof(t_redirection));
 	new_redir->file_name = head_token->next->value;
 	new_redir->type = redir_type(head_token->type);
+	new_redir->qoute = false;
 	new_redir->next = NULL;
 	return (new_redir);
 }
@@ -49,8 +50,6 @@ t_cmd	*new_node_cmd()
 	cmd->av = NULL;
 	cmd->next = NULL;
 	cmd->redirection = NULL;
-	cmd->exit_status = 0;
-	cmd->len = 0;
 	return (cmd);
 }
 
@@ -61,10 +60,10 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	int		i;
 	
 	i = 0;
-	(*cmd)->len = ft_count_arg(head);
-	av = malloc(sizeof(char *) * ((*cmd)->len + 1));
+	int len = ft_count_arg(head);
+	av = malloc(sizeof(char *) * (len + 1));
 	// add the following check
-	if ((*cmd)->len == 0)
+	if (len == 0)
 		av = NULL;
 	while (head && head->type != en_pip)
 	{
@@ -102,6 +101,8 @@ void	fill_redirection_struct(t_token *head_token, t_cmd **cmd)
 		if (!head_token->readed)
 		{
 			new = new_node_redirection(head_token);
+			if (head_token->type == en_single_qoute || head_token->type == en_double_qoute)
+				new->qoute = true;
 			if (!current_cmd->redirection)
 				current_cmd->redirection = new;
 			else

@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:43:48 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 06:53:28 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/10 10:09:17 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,10 @@ int	print_export(t_env *env)
 	i = 0;
 	while (sorted[i])
 	{
-		write(STDOUT_FILENO, "declare -x ", 11);
-		write(STDOUT_FILENO, sorted[i]->var, ft_strlen(sorted[i]->var));
+		printf("declare -x %s", sorted[i]->var);
 		if (sorted[i]->value != NULL)
-		{
-			write(STDOUT_FILENO, "=\"", 2);
-			write(STDOUT_FILENO, sorted[i]->value, ft_strlen(sorted[i]->value));
-			write(STDOUT_FILENO, "\"", 1);
-		}
-		write(STDOUT_FILENO, "\n", 1);
+			printf("=\"%s\"", sorted[i]->value);
+		printf("\n");
 		i++;
 	}
 	free(sorted);
@@ -52,6 +47,8 @@ void	update_or_append_env(t_env **env, char *name, char *value,
 				free(current->value);
 				current->value = value;
 			}
+			else
+				free(value);
 			free(name);
 			return ;
 		}
