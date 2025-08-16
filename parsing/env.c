@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 21:36:12 by zaboumei          #+#    #+#             */
-/*   Updated: 2025/08/15 20:50:14 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/16 09:29:07 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ t_env	*new_node_export(char *str)
 	t_env	*node;
 	char	*helper;
 
-	node = gc_malloc(NULL, en_malloc, sizeof(t_env));
+	node = malloc(sizeof(t_env));
 	helper = ft_strchr(str, '=');
 	node->value = ft_substr(helper + 1, 0, ft_strlen(helper));
 	helper[0] = 0;
 	node->var = ft_substr(str, 0, ft_strlen(str));
 	node->next = NULL;
-	gc_malloc(node->value, en_add_back, 0);
-	gc_malloc(node->var, en_add_back, 0);
 	return (node);
 }
 

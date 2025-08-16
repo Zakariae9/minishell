@@ -53,6 +53,7 @@ void	join_tokens(t_token *head)
 		while (current->join && current->next != NULL)
 		{
 			current->value = ft_strjoin(current->value, current->next->value);
+			current->type = current->next->type;
 			current->join = current->next->join;
 			delete_token(&head, current->next);
 		}

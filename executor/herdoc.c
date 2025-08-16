@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:50 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/15 20:35:50 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/16 10:30:29 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	heredoc_child(int write_fd, t_env *env, char *delimiter, bool qoute)
 			printf("\nminishell: warning: here-document delimited by end-of-file\n");
 			break;
 		}
+		//printf("length: %d\n", strcmp(line, delimiter));
 		if (strcmp(line, delimiter) == 0)
 		{
 			free(line);

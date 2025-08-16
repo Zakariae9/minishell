@@ -101,7 +101,7 @@ void	fill_redirection_struct(t_token *head_token, t_cmd **cmd)
 		if (!head_token->readed)
 		{
 			new = new_node_redirection(head_token);
-			if (head_token->type == en_single_qoute || head_token->type == en_double_qoute)
+			if (head_token->next->type == en_single_qoute || head_token->next->type == en_double_qoute)
 				new->qoute = true;
 			if (!current_cmd->redirection)
 				current_cmd->redirection = new;
