@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:43:48 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 14:41:48 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 19:48:10 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,8 @@ void	update_or_append_env(t_env **env, char *name, char *value,
 		if (ft_strcmp(current->var, name) == 0)
 		{
 			if (has_equal)
-			{
-				// free(current->value);
 				current->value = value;
-			}
-			else
-				// free(value);
-			// free(name);
-			return ;
+			return;
 		}
 		current = current->next;
 	}

@@ -2,7 +2,7 @@
 
 char	*get_address_of_closed_quote(char *command, char original_quote)
 {
-	command = ft_strchr(command, original_quote);
+	//command = ft_strchr(command, original_quote);
     return (ft_strchr(command + 1, original_quote));
 }
 

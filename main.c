@@ -6,7 +6,7 @@ void	read_commands(char *input ,t_token	**head, t_env *env_head)
 
 	if (check_are_qoutes_open(input))
 	{
-		ft_putstr_fd("Syntax error\n", 2);
+		ft_putstr_fd("syntax error\n", 2);
 		get_exit_code(2);
 		return ;
 	}
@@ -40,25 +40,24 @@ void	start_minishell(char **env)
 		char *input = readline("minishell> ");
 		if(!input)
 		{
-			write(1 ,"exit\n" , 6);
+			write(1 ,"\nexit\n" , 6);
 			rl_clear_history();
 			gc_malloc(en_free, 0);
 			break;
 		}
 		if(*input)
-		add_history(input);
+			add_history(input);
 		read_commands(input ,&head ,head_env);
-		//free(input);
 		if (!head)
 			continue ;
 		merging(head, &cmd);
 		if(cmd)
 		{
 			execute_command(cmd , &head_env);
-			//free_cmd_list(cmd);
-		}
+		}		
 	}
 }
+
 
 int	main(int ac, char **av, char **env)
 {

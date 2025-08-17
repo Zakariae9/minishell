@@ -35,7 +35,7 @@ char	*delete_spaces(char *str)
 	int		j;
 	char	*new_str;
 
-	new_str = gc_malloc(en_malloc, ft_strlen(str) + 1);
+	new_str = gc_malloc(en_malloc, ft_strlen(str));
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -56,6 +56,7 @@ char	*delete_spaces(char *str)
 	new_str[j] = 0;
 	return (/*free(str), */new_str);
 }
+
 int	len_list(t_token *head)
 {
 	int	counter;

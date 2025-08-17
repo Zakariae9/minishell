@@ -81,7 +81,7 @@ typedef enum e_redir_type
 
 typedef enum n_gc
 {
-	en_malloc, en_free
+	en_malloc, en_free, en_add_back
 }t_gc;
 
 typedef struct s_redirection
@@ -349,9 +349,7 @@ t_list	*ft_lstnew(void *content);
 void	ft_lstclear(t_list **lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 
-
-void	clean_and_exit(int exit_code);
-void	cleanup(void);
-
+void cleanup(void);
+void clean_and_exit(int exit_code);
 
 #endif

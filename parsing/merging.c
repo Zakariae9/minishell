@@ -66,6 +66,7 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	// add the following check
 	if (len == 0)
 		av = NULL;
+	
 	while (head && head->type != en_pip)
 	{
 		if (!is_redirection(head->type))

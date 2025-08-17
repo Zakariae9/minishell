@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:50 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 15:09:49 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 22:57:46 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	handle_heredoc(char *delimiter, t_env *env, bool qoute)
 int prepare_all_heredocs(t_cmd *cmd_list, t_env *env)
 {
     t_cmd *cmd = cmd_list;
-
     while (cmd)
     {
         t_redirection *redir = cmd->redirection;

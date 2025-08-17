@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:22:56 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 15:10:56 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 23:00:29 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ void	run_execve(t_cmd *cmd, t_env *env)
 	envp = convert_env_to_array(env);
 	execve(path, cmd->av, envp);
 	perror("execve");
-	//free(path);
+	// free(path);
 	free_array(envp);
 	clean_and_exit(126);
 }
 
 void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *pipefd)
 {
+	if (!cmd->av || !cmd->av[0])
+		clean_and_exit(0);
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, STDIN_FILENO);
@@ -79,7 +81,7 @@ void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *pipefd)
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 	}
-	if ( handle_redirections(cmd->redirection) != 0)
+	if (handle_redirections(cmd->redirection) != 0)
 	{
 		clean_and_exit(1);
 	}

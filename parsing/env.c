@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 21:36:12 by zaboumei          #+#    #+#             */
-/*   Updated: 2025/08/17 11:25:17 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 09:30:04 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_env	*new_node_export(char *str)
 	node->value = ft_substr(helper + 1, 0, ft_strlen(helper) - 1); //invalid read without -1 i think 
 	helper[0] = 0;
 	node->var = ft_substr(str, 0, ft_strlen(str));
-	helper[0] = '=';
 	node->next = NULL;
 	return (node);
 }
