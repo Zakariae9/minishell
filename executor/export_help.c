@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 03:43:51 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/06 03:53:56 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/16 13:33:52 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_env	**sort_env(t_env *env)
 		size++;
 		tmp = tmp->next;
 	}
-	array = malloc(sizeof(t_env *) * (size + 1));
+	array = gc_malloc(en_malloc, sizeof(t_env *) * (size + 1));
 	if (!array)
 		return (NULL);
 	tmp = env;

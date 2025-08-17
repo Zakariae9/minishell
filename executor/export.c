@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:43:48 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/10 10:09:17 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/17 14:41:48 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	print_export(t_env *env)
 		printf("\n");
 		i++;
 	}
-	free(sorted);
+	// free(sorted);
 	return (0);
 }
 
@@ -44,17 +44,17 @@ void	update_or_append_env(t_env **env, char *name, char *value,
 		{
 			if (has_equal)
 			{
-				free(current->value);
+				// free(current->value);
 				current->value = value;
 			}
 			else
-				free(value);
-			free(name);
+				// free(value);
+			// free(name);
 			return ;
 		}
 		current = current->next;
 	}
-	new_node = malloc(sizeof(t_env));
+	new_node = gc_malloc(en_malloc, sizeof(t_env));
 	new_node->var = name;
 	new_node->value = value;
 	new_node->next = *env;

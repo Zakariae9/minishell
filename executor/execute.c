@@ -6,13 +6,11 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 03:26:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/15 17:42:20 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 16:49:18 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-extern int	g_sig_s;
 
 void	wait_for_children(int *pid, int ac)
 {
@@ -32,17 +30,13 @@ void	wait_for_children(int *pid, int ac)
 				write(1, "\n", 1);
 			else if (sig == SIGQUIT)
 				write(1, "Quit\n", 5);
-			get_exit_code(128 + sig);	
-			// *exit_status = 128 + sig;
+			get_exit_code(128 + sig);
 		}
 		else
-		{
 			get_exit_code(WEXITSTATUS(status));
-			// *exit_status = WEXITSTATUS(status);
-		}	
 	}
-	free(pid);
-	g_sig_s = 0;
+	// free(pid);
+	get_flag(0);
 	set_signals_parent_interactive();
 }
 
@@ -53,7 +47,6 @@ int	fork_and_exec_cmd(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2])
 	if (cmd->next && pipe(pipefd) == -1)
 	{
 		perror("pipe");
-		
 		get_exit_code(1);
 		return (-1);
 	}
@@ -110,13 +103,13 @@ void	start_pipeline(t_cmd *cmd, t_env *env)
 
 	ac = 0;
 	tmp = cmd;
-	g_sig_s = 1;
+	get_flag(1);
 	while (tmp)
 	{
 		ac++;
 		tmp = tmp->next;
 	}
-	pid = malloc(sizeof(int) * ac);
+	pid = gc_malloc(en_malloc, sizeof(int) * ac);
 	if (!pid)
 	{
 		perror("malloc");
@@ -144,7 +137,7 @@ void	execute_command(t_cmd *cmd, t_env **env)
 	if (cmd->av && !cmd->next && is_parent_builtin(cmd->av[0])
 		&& !has_redirection(cmd))
 	{
-		get_exit_code(run_builtin(cmd , env));
+		get_exit_code(run_builtin(cmd, env));
 		return ;
 	}
 	start_pipeline(cmd, *env);

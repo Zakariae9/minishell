@@ -6,23 +6,11 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 04:14:45 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/15 16:17:05 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/16 10:18:11 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int		g_sig_s = 0;
-
-
-int get_exit_code(int exit_code)
-{
-	static int save;
-
-	if(exit_code != -1)
-		save = exit_code;
-	return(save);
-}
 
 void	set_signals_parent_interactive(void)
 {
@@ -45,7 +33,7 @@ void	set_signals_child_default(void)
 void	sig_quit_handler(int sig)
 {
 	(void)sig;
-	if (g_sig_s)
+	if (get_flag(-1) == 1)
 		write(1, "Quit\n", 5);
 }
 

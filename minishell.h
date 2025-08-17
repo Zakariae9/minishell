@@ -19,13 +19,6 @@
 
 // \\// Parser
 
-typedef struct t_list
-{
-	void	*content;
-	struct	t_list *next;
-}t_list;
-
-
 typedef struct s_expand_var
 {
 	int			end_pos;
@@ -35,10 +28,7 @@ typedef struct s_expand_var
 	char		*helper;
 }t_expand_var;
 
-typedef enum n_gc
-{
-	en_malloc, en_free, en_add_back
-}t_gc;
+
 
 typedef enum n_expand
 {
@@ -66,12 +56,6 @@ typedef	struct s_env
 }t_env;
 
 
-typedef struct s_addresses
-{
-	void	*value;
-	void	*next;
-}t_addresses;
-
 typedef struct s_token
 {
 	t_expand		expanding;
@@ -95,6 +79,10 @@ typedef enum e_redir_type
     REDIR_HEREDOC
 }t_redir_type;
 
+typedef enum n_gc
+{
+	en_malloc, en_free
+}t_gc;
 
 typedef struct s_redirection
 {
@@ -105,7 +93,11 @@ typedef struct s_redirection
 	int						heredoc_fd;
 }t_redirection;
 
-
+typedef struct t_list
+{
+	void	*content;
+	struct	t_list *next;
+}t_list;
 
 typedef struct s_cmd 
 {
@@ -164,13 +156,12 @@ char	*get_variable_for_expanding(char *command, int *start, int *end_pos);
 void	deside_expanding(t_token *head);
 void	delete_tokens(t_token	**head, char *data);
 char	*ft_getenv(char *variable, t_env *head);
-char	*expand_exit_status(char *command, t_expand_var *expand, t_addresses **head);
+char	*expand_exit_status(char *command, t_expand_var *expand);
 
 // Free
 char	*free2d_ar(char **str);
 void	free_token(t_token	**head);
 void	free_list_tokens(t_token **head);
-void	free_address(t_addresses *head);
 
 // Helpers
 char	*get_address_of_closed_quote(char *command, char original_quote);
@@ -199,8 +190,6 @@ char	*token_without_q(char *command, t_token **head);
 t_token		*new_node(char *str, t_type type);
 t_token		*last_node(t_token *head);
 void		add_back(t_token **head, t_token *new);
-t_addresses	*node(void *value);
-void		push_back(t_addresses **head, t_addresses *new);
 int			len_list(t_token *head);
 char		*ft_getenv(char *var, t_env *env);
 void		delete_token(t_token **head, t_token *address);
@@ -328,6 +317,7 @@ void sig_quit_handler(int sig);
 void	set_signals_parent_interactive(void);
 void set_signals_parent_ignore(void);
 int get_exit_code(int exit_code);
+int get_flag(int flag);
 
 // utils
 int ft_strcmp(const char *s1, const char *s2);
@@ -351,12 +341,17 @@ void free_array(char **arr);
 void	free_cmd_list(t_cmd *cmd);
 void	print_error_exit(char *msg, char *arg, int code);
 
+
 // garbade colactor
-void	*gc_malloc(void *lst, t_gc gc, size_t size);
+void	*gc_malloc(t_gc gc, size_t size);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 void	ft_lstclear(t_list **lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
 
+
+void	clean_and_exit(int exit_code);
+void	cleanup(void);
 
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 04:14:02 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/13 10:51:40 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/17 09:58:18 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*allocate_word(const char *s, int len)
 
 	if (!s || len < 0)
 		return (NULL);
-	word = malloc(len + 1);
+	word = gc_malloc(en_malloc, len + 1);
 	if (!word)
 		return (NULL);
 	i = 0;
@@ -80,10 +80,10 @@ static void	*free_split(char **arr, int index)
 	i = 0;
 	while (i < index)
 	{
-		free(arr[i]);
+		// free(arr[i]);
 		i++;
 	}
-	free(arr);
+	// free(arr);
 	return (NULL);
 }
 
@@ -97,7 +97,7 @@ char	**ft_split(const char *s, char c)
 	if (!s)
 		return (NULL);
 	words = count_word(s, c);
-	str = (char **)malloc((words + 1) * sizeof(char *));
+	str = (char **)gc_malloc(en_malloc, (words + 1) * sizeof(char *));
 	if (!str)
 		return (NULL);
 	j = 0;

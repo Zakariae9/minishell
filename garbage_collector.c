@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+void clean_and_exit(int exit_code)
+{
+	gc_malloc(en_free, 0);
+	exit(exit_code);
+}
+
+void cleanup(void)
+{
+	clear_history();
+	gc_malloc(en_free, 0);
+}
+
 void	ft_lstclear(t_list **lst)
 {
 	t_list	*temp;
@@ -11,11 +23,26 @@ void	ft_lstclear(t_list **lst)
 		while (temp != NULL)
 		{
 			next = temp->next;
+			free(temp->content);
 			free(temp);
 			temp = next;
 		}
 		*lst = NULL;
 	}
+}
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*lst_helper;
+
+	if (lst == NULL)
+		return (lst);
+	lst_helper = lst;
+	while (lst_helper->next != NULL)
+	{
+		lst_helper = lst_helper->next;
+	}
+	return (lst_helper);
 }
 
 t_list	*ft_lstnew(void *content)
@@ -43,17 +70,25 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	last_node->next = new;
 }
 
-void	*gc_malloc(void *lst, t_gc gc, size_t size)
+void	*gc_malloc(t_gc gc, size_t size)
 {
-	static	void	*head = NULL;
+	static	t_list	*head = NULL;
+	void			*lst;
 
 	if (gc == en_malloc)
-		return (malloc(size));
+	{
+		lst = malloc(size);
+		if (!lst)
+		{
+			perror("malloc");
+			cleanup();
+		}
+		ft_lstadd_back(&head, ft_lstnew(lst));
+	}
 	if (gc == en_free)
 	{
-		ft_lstclear(&lst);
-		return ;
+		ft_lstclear(&head);
+		return (NULL);
 	}
-	ft_lstadd_back(&head, ft_lstnew(lst));
-	return (NULL);
+	return (lst);
 }

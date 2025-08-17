@@ -6,17 +6,18 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:50 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/16 10:30:29 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 15:09:49 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+
 void heredoc_sigint_handler(int sig)
 {
     (void)sig;
     write(1, "\n", 1);
-    exit(130);
+    clean_and_exit(130);
 }
 
 static void	heredoc_child(int write_fd, t_env *env, char *delimiter, bool qoute)
@@ -35,17 +36,17 @@ static void	heredoc_child(int write_fd, t_env *env, char *delimiter, bool qoute)
 		//printf("length: %d\n", strcmp(line, delimiter));
 		if (strcmp(line, delimiter) == 0)
 		{
-			free(line);
+			// free(line);
 			break;
 		}
 		if (!qoute)
 			line = expanding(line, env);
 		write(write_fd, line, strlen(line));
 		write(write_fd, "\n", 1);
-		free(line);
+		// free(line);
 	}
 	close(write_fd);
-	exit(0);
+	clean_and_exit(0);
 }
 
 int	heredoc_parent(pid_t pid, int read_fd)
@@ -55,6 +56,7 @@ int	heredoc_parent(pid_t pid, int read_fd)
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	
 	{
 		close(read_fd);
 		return (-2);
@@ -85,6 +87,7 @@ int	handle_heredoc(char *delimiter, t_env *env, bool qoute)
 int prepare_all_heredocs(t_cmd *cmd_list, t_env *env)
 {
     t_cmd *cmd = cmd_list;
+
     while (cmd)
     {
         t_redirection *redir = cmd->redirection;

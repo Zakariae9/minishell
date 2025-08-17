@@ -6,7 +6,7 @@
 /*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 21:36:12 by zaboumei          #+#    #+#             */
-/*   Updated: 2025/08/16 09:29:07 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/17 11:25:17 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ t_env	*new_node_export(char *str)
 	t_env	*node;
 	char	*helper;
 
-	node = malloc(sizeof(t_env));
+	node = gc_malloc(en_malloc, sizeof(t_env));
 	helper = ft_strchr(str, '=');
-	node->value = ft_substr(helper + 1, 0, ft_strlen(helper));
+	node->value = ft_substr(helper + 1, 0, ft_strlen(helper) - 1); //invalid read without -1 i think 
 	helper[0] = 0;
 	node->var = ft_substr(str, 0, ft_strlen(str));
+	helper[0] = '=';
 	node->next = NULL;
 	return (node);
 }

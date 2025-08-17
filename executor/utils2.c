@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 10:50:18 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/14 08:52:54 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/17 12:12:06 by zaboumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	{
 		end--;
 	}
-	s = malloc(end - start + 1);
+	s = gc_malloc(en_malloc, end - start + 1);
 	if (!s)
 		return (NULL);
 	while (start < end)
@@ -53,9 +53,9 @@ void	free_array(char **arr)
 	i = 0;
 	if (!arr)
 		return ;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	// while (arr[i])
+		// free(arr[i++]);
+	// free(arr);
 }
 
 void	print_error_exit(char *msg, char *arg, int code)
@@ -63,7 +63,7 @@ void	print_error_exit(char *msg, char *arg, int code)
 	if (arg)
 		write(2, arg, ft_strlen(arg));
 	write(2, msg, ft_strlen(msg));
-	exit(code);
+	clean_and_exit(code);
 }
 
 char	**convert_env_to_array(t_env *env)
@@ -79,7 +79,7 @@ char	**convert_env_to_array(t_env *env)
 		count++;
 		tmp = tmp->next;
 	}
-	array = malloc(sizeof(char *) * (count + 1));
+	array = gc_malloc(en_malloc, sizeof(char *) * (count + 1));
 	if (!array)
 		return (NULL);
 	if (fill_env_array(env, array, count))

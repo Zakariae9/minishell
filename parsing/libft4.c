@@ -12,7 +12,7 @@ char	*add_str(char *old_str, char *added_str, int pos)
 	i_added_str = 0;
 	i_new_str = 0;
 	len_added_str = ft_strlen(added_str);
-	new_str = malloc(len_added_str + ft_strlen(old_str) + 1);
+	new_str = gc_malloc(en_malloc, len_added_str + ft_strlen(old_str) + 1);
 	if (new_str == NULL)
 		return (NULL);
 	if (pos == 0)
@@ -42,7 +42,7 @@ char	*delete_part(char *old_str, char *deleted_str)
 	len_deleted_str = ft_strlen(deleted_str);
 	len_old_str = ft_strlen(old_str);
 	len_new_str = ft_strlen(old_str) - len_deleted_str;
-	new_str = malloc(len_new_str + 1);
+	new_str = gc_malloc(en_malloc, len_new_str + 1);
 	if (new_str == NULL)
 		return (NULL);
 	temp = old_str;

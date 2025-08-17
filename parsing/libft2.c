@@ -29,7 +29,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	new_str = malloc(len);
+	new_str = gc_malloc(en_malloc, len);
 	if (new_str == NULL)
 		return (NULL);
 	fill_str(s1, s2, new_str);
@@ -41,7 +41,7 @@ char	*ft_strdup(const char *s)
 	int		i;
 	char	*str;
 
-	str = malloc(ft_strlen(s) + 1);
+	str = gc_malloc(en_malloc, ft_strlen(s) + 1);
 	if (str == NULL)
 		return (NULL);
 	i = 0;

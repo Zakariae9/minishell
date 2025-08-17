@@ -8,8 +8,9 @@ SRCS = 	parsing/check_errores1.c parsing/env.c parsing/expanding.c parsing/free.
 		parsing/libft2.c parsing/libft3.c parsing/libft4.c parsing/libft5.c parsing/linkedlist1.c \
 		parsing/merging.c  parsing/temp.c parsing/checking.c parsing/fixing_tokens.c \
 		executor/built_in_cmd.c executor/cd.c executor/env2.c executor/execute2.c executor/execute3.c executor/execute.c\
-		executor/export.c executor/export_help.c executor/redirections.c executor/signals.c executor/unset.c  executor/utils.c \
-		executor/utils1.c executor/utils2.c executor/herdoc.c main.c\
+		executor/export.c executor/export_help.c executor/redirections.c executor/signals.c executor/unset.c  executor/split.c \
+		executor/utils1.c executor/utils2.c executor/herdoc.c\
+		garbage_collector.c main.c\
 		 
 OBJS = ${SRCS:.c=.o}
 

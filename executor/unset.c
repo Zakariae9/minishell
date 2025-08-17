@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:47:20 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/04 06:20:19 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/17 09:58:25 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	remove_env(t_env **env, char *name)
 				*env = tmp->next;
 			else
 				prev->next = tmp->next;
-			free(tmp->var);
-			free(tmp->value);
-			free(tmp);
+			// free(tmp->var);
+			// free(tmp->value);
+			// free(tmp);
 			return ;
 		}
 		prev = tmp;

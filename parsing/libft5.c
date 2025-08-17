@@ -43,7 +43,7 @@ char	*ft_itoa(int n)
 
 	num = n;
 	len = int_len(num);
-	str_nbr = malloc(len + 1);
+	str_nbr = gc_malloc(en_malloc, len + 1);
 	if (str_nbr == NULL)
 		return (NULL);
 	fill(n, str_nbr, len);

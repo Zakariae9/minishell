@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:42:54 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/10 11:29:20 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/16 10:33:32 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,10 @@ void	ft_exit(char **av)
 	if (av[1])
 	{
 		if (!is_numeric(av[1]) || !ft_str_to_ll(av[1], &code))
-		{
-			fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
-				av[1]);
-			exit(2);
-		}
+			print_error_exit(": numeric argument required\n", av[1], 2);
 		if (av[2])
 		{
-			fprintf(stderr, "minishell: exit: too many arguments\n");
+			write(2, "minishell: exit: too many arguments\n", 36);
 			return ;
 		}
 		exit((unsigned char)code);

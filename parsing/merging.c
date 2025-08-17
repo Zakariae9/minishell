@@ -34,7 +34,8 @@ t_redirection	*new_node_redirection(t_token *head_token)
 {
 	t_redirection	*new_redir;
 
-	new_redir = malloc(sizeof(t_redirection));
+	new_redir = gc_malloc(en_malloc, sizeof(t_redirection));
+	new_redir->file_name = gc_malloc(en_malloc, ft_strlen(head_token->next->value) + 1);
 	new_redir->file_name = head_token->next->value;
 	new_redir->type = redir_type(head_token->type);
 	new_redir->qoute = false;
@@ -46,7 +47,7 @@ t_cmd	*new_node_cmd()
 {
 	t_cmd	*cmd;
 
-	cmd	= malloc(sizeof(t_cmd));
+	cmd	= gc_malloc(en_malloc, sizeof(t_cmd));
 	cmd->av = NULL;
 	cmd->next = NULL;
 	cmd->redirection = NULL;
@@ -61,7 +62,7 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	
 	i = 0;
 	int len = ft_count_arg(head);
-	av = malloc(sizeof(char *) * (len + 1));
+	av = gc_malloc(en_malloc, sizeof(char *) * (len + 1));
 	// add the following check
 	if (len == 0)
 		av = NULL;
@@ -69,6 +70,7 @@ void	fill_cmd_args(t_cmd **cmd, t_token *head)
 	{
 		if (!is_redirection(head->type))
 		{
+			av[i] = gc_malloc(en_malloc, ft_strlen(head->value) + 1);
 			if (head->type == en_word && !head->value[0])
 				av[i++] = NULL;
 			else

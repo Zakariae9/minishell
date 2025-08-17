@@ -14,42 +14,32 @@ void	expanding_all_tokens(t_token *head, t_env *head_env)
 	}
 }
 
-char	*expand_exit_status(char *command, t_expand_var *expand, t_addresses **head)
+char	*expand_exit_status(char *command, t_expand_var *expand)
 {
-	push_back(head, node(command));
 	command = add_str(command, ft_itoa(get_exit_code(-1)), expand->start);
-	push_back(head, node(command));
 	command = delete_part(command, expand->helper);
-	push_back(head, node(expand->helper));
 	return (command);
 }
 
 char	*expanding(char *command, t_env *head_env)
 {
 	t_expand_var	expand;
-	t_addresses	*head;
 
-	head = NULL;
 	expand.num = num_of_char(command, '$');
 	while (expand.num--)
 	{
 		expand.helper = get_variable_for_expanding(command, &expand.start, &expand.end_pos);
 		if (!ft_strcmp(expand.helper, "$?"))
 		{
-			command = expand_exit_status(command, &expand, &head);
+			command = expand_exit_status(command, &expand);
 			continue ;
 		}
 		expand.env = ft_getenv(expand.helper + 1, head_env);
 		if (expand.env != NULL)
-		{
-			push_back(&head, node(command));
 			command = add_str(command, expand.env, expand.start);
-		}
-		push_back(&head, node(command));
 		command = delete_part(command, expand.helper);
-		push_back(&head, node(expand.helper));
 	}
-	return (free_address(head), command);
+	return (command);
 }
 
 char	*get_variable_for_expanding(char *command, int *start, int *end_pos)

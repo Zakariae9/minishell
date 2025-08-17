@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 04:14:57 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/13 10:49:44 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/16 10:20:36 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_overflow(long long r, int d, int s)
 	const long long	mx = 9223372036854775807;
 	const long long	mn = (-9223372036854775807 - 1);
 
-	if ((s == 1 && r > (mx - d) / 10) || (s == -1 && - r < (mn + d) / 10))
+	if ((s == 1 && r > (mx - d) / 10) || (s == -1 && (-r) < (mn + d) / 10))
 		return (0);
 	return (1);
 }
@@ -59,4 +59,22 @@ int	ft_str_to_ll(const char *str, long long *out)
 	}
 	*out = sign * res;
 	return (1);
+}
+
+int	get_exit_code(int exit_code)
+{
+	static int	save;
+
+	if (exit_code != -1)
+		save = exit_code;
+	return (save);
+}
+
+int	get_flag(int flag)
+{
+	static int	save;
+
+	if (flag != -1)
+		save = flag;
+	return (flag);
 }
