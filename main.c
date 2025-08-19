@@ -52,7 +52,7 @@ void	start_minishell(char **env)
 			continue ;
 		merging(head, &cmd);
 		if(cmd)
-		{
+		{			
 			execute_command(cmd , &head_env);
 		}		
 	}
@@ -64,6 +64,5 @@ int	main(int ac, char **av, char **env)
 	if (ac > 1 || av[1])
 		return (1);
 	start_minishell(env);
-	
 	return (0);
 }

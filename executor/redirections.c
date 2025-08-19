@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 05:41:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/09 04:10:26 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/19 08:44:53 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	handle_one_redirection(t_redirection *redir)
 			return (1);
 		}
 		close(redir->heredoc_fd);
+		redir->heredoc_fd = -1;
 		return (0);
 	}
 	return (0);

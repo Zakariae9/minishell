@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:48:22 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 09:57:21 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/19 20:26:01 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ char	*search_cmd_in_paths(char **paths, char *cmd)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(tmp, cmd);
-		// free(tmp);
 		if (full_path && access(full_path, X_OK) == 0)
 			return (full_path);
-		// free(full_path);
 		i++;
 	}
 	return (NULL);
@@ -63,7 +61,6 @@ char	*find_cmd_path(char *cmd, t_env *env)
 	if (!paths)
 		return (NULL);
 	full_path = search_cmd_in_paths(paths, cmd);
-	free_array(paths);
 	return (full_path);
 }
 
@@ -73,13 +70,11 @@ char	*join_var_value(const char *var, const char *value)
 	int		len_value;
 	char	*result;
 
-	len_var = strlen(var);
+	len_var = ft_strlen(var);
 	if (!value)
 		return (strdup(var));
-	len_value = strlen(value);
+	len_value = ft_strlen(value);
 	result = gc_malloc(en_malloc, len_var + 1 + len_value + 1);
-	if (!result)
-		return (NULL);
 	memcpy(result, var, len_var);
 	result[len_var] = '=';
 	memcpy(result + len_var + 1, value, len_value);
@@ -98,14 +93,6 @@ int	fill_env_array(t_env *env, char **array, int count)
 	while (i < count)
 	{
 		array[i] = join_var_value(tmp->var, tmp->value);
-		if (!array[i])
-		{
-			j = 0;
-			while (j < i)
-				// free(array[j++]);
-			// free(array);
-			return (1);
-		}
 		tmp = tmp->next;
 		i++;
 	}

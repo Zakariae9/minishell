@@ -35,7 +35,7 @@ char	*delete_spaces(char *str)
 	int		j;
 	char	*new_str;
 
-	new_str = gc_malloc(en_malloc, ft_strlen(str));
+	new_str = gc_malloc(en_malloc, ft_strlen(str) + 1);
 	i = 0;
 	j = 0;
 	while (str[i])

@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 04:14:57 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/16 10:20:36 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/19 09:51:23 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,12 @@ int	get_exit_code(int exit_code)
 	return (save);
 }
 
-int	get_flag(int flag)
+void	get_fd(int fd)
 {
 	static int	save;
 
-	if (flag != -1)
-		save = flag;
-	return (flag);
+	if (fd != -1)
+		save = fd;
+	else
+		close(save);
 }

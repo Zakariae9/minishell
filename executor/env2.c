@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:42:54 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/16 10:33:32 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/19 21:30:03 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,21 @@ int	is_numeric(const char *str)
 void	ft_exit(char **av)
 {
 	long long	code;
+	int			last_status;
+	char		*trimmed;
 
-	printf("exit\n");
-	if (av[1])
+	last_status = get_exit_code(-1);
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
+	if (!av[1])
+		clean_and_exit(last_status);
+	trimmed = ft_strtrim(av[1], " \t\n\r\v\f");
+	if (!is_numeric(trimmed) || !ft_str_to_ll(trimmed, &code))
+		print_error_exit("numeric argument required\n", av[1], 2);
+	if (av[2])
 	{
-		if (!is_numeric(av[1]) || !ft_str_to_ll(av[1], &code))
-			print_error_exit(": numeric argument required\n", av[1], 2);
-		if (av[2])
-		{
-			write(2, "minishell: exit: too many arguments\n", 36);
-			return ;
-		}
-		exit((unsigned char)code);
+		write(2, "minishell: exit: too many arguments\n", 36);
+		return ;
 	}
-	exit(0);
+	clean_and_exit((unsigned char)code);
 }

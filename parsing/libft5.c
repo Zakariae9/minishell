@@ -18,21 +18,21 @@ static size_t	int_len(long n)
 	return (i);
 }
 
-static void	fill(long n, char *s, size_t len)
+static void fill(long n, char *s, size_t len)
 {
-	s[len] = '\0';
-	if (n < 0)
-	{
-		s[0] = '-';
-		n = -1 * n;
-	}
-	while (len-- > 0)
-	{
-		if (s[len] == '-')
-			return ;
-		s[len] = (n % 10) + '0';
-		n /= 10;
-	}
+    int    neg;
+
+    s[len] = '\0';
+    neg = (n < 0);
+    if (neg)
+        n = -n;
+    while (len-- > 0)
+    {
+        s[len] = (n % 10) + '0';
+        n /= 10;
+        if (neg && len == 0)
+            s[0] = '-';
+    }
 }
 
 char	*ft_itoa(int n)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaboumei <zaboumei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 10:50:18 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 22:33:21 by zaboumei         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:19:24 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 		end--;
 	}
 	s = gc_malloc(en_malloc, end - start + 1);
-	if (!s)
-		return (NULL);
 	while (start < end)
 		s[i++] = s1[start++];
 	s[i] = '\0';
 	return (s);
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	// while (arr[i])
-		// free(arr[i++]);
-	// free(arr);
 }
 
 void	print_error_exit(char *msg, char *arg, int code)
@@ -80,10 +66,17 @@ char	**convert_env_to_array(t_env *env)
 		tmp = tmp->next;
 	}
 	array = gc_malloc(en_malloc, sizeof(char *) * (count + 1));
-	if (!array)
-		return (NULL);
 	if (fill_env_array(env, array, count))
 		return (NULL);
 	array[count] = NULL;
 	return (array);
+}
+
+int	get_flag(int flag)
+{
+	static int	save;
+
+	if (flag != -1)
+		save = flag;
+	return (flag);
 }

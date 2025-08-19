@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 08:43:48 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 19:48:10 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/19 09:19:03 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	print_export(t_env *env)
 		printf("\n");
 		i++;
 	}
-	// free(sorted);
 	return (0);
 }
 
@@ -44,7 +43,7 @@ void	update_or_append_env(t_env **env, char *name, char *value,
 		{
 			if (has_equal)
 				current->value = value;
-			return;
+			return ;
 		}
 		current = current->next;
 	}
@@ -92,9 +91,7 @@ int	ft_export(char **args, t_env **env)
 			exit_status = 1;
 		}
 		else
-		{
 			add_or_update_env(env, args[i]);
-		}
 		i++;
 	}
 	return (exit_status);

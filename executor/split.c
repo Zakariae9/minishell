@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 04:14:02 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 09:58:18 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:25:57 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,6 @@ char	*allocate_word(const char *s, int len)
 	return (word);
 }
 
-static void	*free_split(char **arr, int index)
-{
-	int	i;
-
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (i < index)
-	{
-		// free(arr[i]);
-		i++;
-	}
-	// free(arr);
-	return (NULL);
-}
-
 char	**ft_split(const char *s, char c)
 {
 	char	**str;
@@ -107,8 +91,6 @@ char	**ft_split(const char *s, char c)
 			s++;
 		lenw = len_word(s, c);
 		str[j] = allocate_word(s, lenw);
-		if (!str[j])
-			return (free_split(str, j));
 		s += lenw;
 		j++;
 	}

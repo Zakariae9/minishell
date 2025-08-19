@@ -4,7 +4,8 @@ bool	check_redirection(t_token *head)
 {
 	while (head)
 	{
-		if (is_redirection(head->type) && is_redirection(head->next->type))
+		if (is_redirection(head->type) && (is_redirection(head->next->type)
+			|| head->next->type == en_pip))
 			return (true);
 		head = head->next;
 	}

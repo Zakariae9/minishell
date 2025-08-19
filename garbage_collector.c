@@ -12,6 +12,7 @@ void cleanup(void)
 	gc_malloc(en_free, 0);
 }
 
+
 void	ft_lstclear(t_list **lst)
 {
 	t_list	*temp;
@@ -88,7 +89,17 @@ void	*gc_malloc(t_gc gc, size_t size)
 	if (gc == en_free)
 	{
 		ft_lstclear(&head);
+		head = NULL;
 		return (NULL);
 	}
+	if (gc == en_get_head)
+		return (head);
 	return (lst);
+}
+void gc_register(void *ptr)
+{
+	t_list	*head;
+
+	head = gc_malloc(en_get_head, 0);
+	ft_lstadd_back(&head, ft_lstnew(ptr));
 }

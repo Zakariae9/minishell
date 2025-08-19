@@ -69,7 +69,7 @@ typedef struct s_token
 
 //\\ Parser
 
-// \\// Executer Things
+//\\ Executer ?/////////////////////////////////////////////////////
 
 typedef enum e_redir_type
 {
@@ -81,8 +81,10 @@ typedef enum e_redir_type
 
 typedef enum n_gc
 {
-	en_malloc, en_free, en_add_back
+	en_malloc, en_free, en_get_head
 }t_gc;
+
+
 
 typedef struct s_redirection
 {
@@ -112,7 +114,7 @@ typedef struct s_pipeline {
 	int ac;
 }	t_pipeline;
 
-//\\ Executer
+//\\ Executer ?/////////////////////////////////////////////////////
 
 // libft prototypes
 int			ft_isalnum(int c);
@@ -232,7 +234,7 @@ t_redir_type	redir_type(t_type type);
 int				count_arg(t_token *head);
 
 
-///////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -242,12 +244,7 @@ void	execute_command(t_cmd *cmd, t_env **env);
 void	start_pipeline(t_cmd *cmd, t_env *env);
 void	run_pipeline(t_cmd *cmd, t_env *env, int *pid, int ac);
 void	wait_for_children(int *pid, int ac);
-int	has_redirection(t_cmd *cmd);
-
-
-
-
-
+int	fork_and_exec_cmd(t_cmd *cmd, t_env *env, int prev_fd, int pipefd[2]);
 
 
 //execute 2
@@ -256,7 +253,7 @@ void	check_executable_validity(char *path);
 char	*resolve_executable_path_or_exit(t_cmd *cmd, t_env *env);
 void	run_execve(t_cmd *cmd, t_env *env);
 void	child_process(t_cmd *cmd, t_env *env, int prev_fd, int *pipefd);
-char	**convert_env_to_array(t_env *env);
+
 
 //execute3
 
@@ -265,6 +262,7 @@ char	*search_cmd_in_paths(char **paths, char *cmd);
 char	*find_cmd_path(char *cmd, t_env *env);
 char	*join_var_value(const char *var, const char *value);
 int	fill_env_array(t_env *env, char **array, int count);
+
 
 //export
 int ft_export(char **args, t_env **env);
@@ -279,11 +277,12 @@ t_env **sort_env(t_env *env);
 int is_valid_identifier(const char *arg);
 
 
-
-//////////////
+// built_in
 
 int is_builtin(char *cmd);
 int run_builtin(t_cmd *cmd, t_env **env);
+int	is_parent_builtin(char *cmd);
+
 
 //redirections.c
 
@@ -293,63 +292,64 @@ int handle_redir_append(const char *file);
 int handle_redirections(t_redirection *redir_list);
 int handle_one_redirection(t_redirection *redir);
 
+
 //herdoc.c
 
 int prepare_all_heredocs(t_cmd *cmd_list, t_env	*env);
 int	handle_heredoc(char *delimiter, t_env *env, bool qoute);
-
+void	heredoc_sigint_handler(int sig);
 
 
 // build_in_cmd
+
 int ft_cd(char **args, t_env **env);
 int ft_echo(t_cmd *cmd);
 int ft_pwd(void);
 void ft_exit(char **args);
 int ft_env(t_env *env);
 int ft_unset(t_env **env, char **args);
-int is_parent_builtin(char *cmd);
 
 
 //signals
+
 void	sigint_handler(int sig);
 void set_signals_child_default(void);
 void sig_quit_handler(int sig);
 void	set_signals_parent_interactive(void);
 void set_signals_parent_ignore(void);
-int get_exit_code(int exit_code);
-int get_flag(int flag);
 
-// utils
-int ft_strcmp(const char *s1, const char *s2);
-size_t ft_strlen(const char *s);
-char *ft_strstr(const char *haystack, const char *needle);
-char *ft_strdup(const char *s);
-char *ft_strchr(const char *s, int c);
-void ft_putchar(char c);
-char *ft_strcat(char *dest, const char *src);
-int ft_strncmp(const char *str1, const char *str2, size_t n);
-void	ft_putstr(char *s);
+
+//split
+
 char	**ft_split(const char *s, char c);
-char	*ft_strtrim(char const *s1, char const *set);
-int ft_isalpha(int c);
-int ft_isalnum(int c);
-char *ft_strcpyy(char *dest, const char *src);
-char *ft_substr(const char *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
+
+
+//utils1.c
+
 int	ft_str_to_ll(const char *str, long long *out);
-void free_array(char **arr);
-void	free_cmd_list(t_cmd *cmd);
+int get_exit_code(int exit_code);
+void	get_fd(int fd);
+
+
+//utils2.c
+
+int get_flag(int flag);
+int	has_redirection(t_cmd *cmd);
 void	print_error_exit(char *msg, char *arg, int code);
+char	**convert_env_to_array(t_env *env);
+char	*ft_strtrim(char const *s1, char const *set);
 
 
 // garbade colactor
+
 void	*gc_malloc(t_gc gc, size_t size);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 void	ft_lstclear(t_list **lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-
 void cleanup(void);
 void clean_and_exit(int exit_code);
+void gc_register(void *ptr);
+
 
 #endif

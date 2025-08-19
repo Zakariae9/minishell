@@ -6,7 +6,7 @@
 /*   By: mel-hafi <mel-hafi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 03:26:47 by mel-hafi          #+#    #+#             */
-/*   Updated: 2025/08/17 09:54:29 by mel-hafi         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:13:38 by mel-hafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	wait_for_children(int *pid, int ac)
 		else
 			get_exit_code(WEXITSTATUS(status));
 	}
-	// free(pid);
 	get_flag(0);
 	set_signals_parent_interactive();
 }
